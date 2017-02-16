@@ -3,8 +3,8 @@ using Discord.Commands;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-namespace BOTEXE
-{ }
+namespace Final_Bot
+{
     // Create a module with no prefix (STANDARD COMMANDS)
     public class Info : ModuleBase
     {
@@ -15,16 +15,21 @@ namespace BOTEXE
             Bot.logToText(" -- " + Context.User.Username + " asked for help on channel " + Context.Channel.Name);
         }
 
-    [Command("delete"), Summary("Deletes up to 100 messages")]
-    public async Task delete()
-    {
-        var ch = Context.Channel as IGuildChannel;
-        var user = Context.User as IGuildUser;
-        var adminID = ch.Guild.Roles.FirstOrDefault(x => x.Name == "admin");
+        [Command("delete"), Summary("Deletes up to 100 messages")]
+        public async Task delete()
+        {
+            var user = Context.User as IGuildUser;
 
-        if (user.RoleIds.Contains(adminID) ;
-        //await ReplyAsync(guild.Roles.ToString());
-    }
+            if (user.hasRole("admin"))
+            {
+                var deleteMsg = await Context.Channel.GetMessagesAsync(100).Flatten();
+                await Context.Channel.DeleteMessagesAsync(deleteMsg);
+                string logLine = " -- The user " + user.Username + " has used the delete command on channel " + Context.Channel.Name + ". 100 messages have been deleted.";
+
+                Bot.logToText(logLine);
+            }
+
+        }
 
         [Command("say"), Summary("Echos a message.")]
         public async Task Say([Remainder, Summary("The text to echo")] string echo)
@@ -44,6 +49,27 @@ namespace BOTEXE
 
 
 
-    //NOT COMMANDS
-    
+        //NOT COMMANDS
+
+    }
+
+    public static class xtndMethods
+    {
+        public static bool hasRole(this IGuildUser usr, string role)
+        {
+            var ch = usr.Guild as IGuild;
+           
+            var roleID = ch.Roles.FirstOrDefault(x => x.Name == role).Id;
+            if (usr.RoleIds.ToList().Contains(roleID))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+
 }
