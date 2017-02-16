@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Final_Bot
+﻿namespace Final_Bot
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-        }
+        // Convert our sync-main to an async main method
+        static void Main(string[] args) => new Bot().Start().GetAwaiter().GetResult();
+
+
     }
 }
