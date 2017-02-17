@@ -42,8 +42,16 @@ namespace Final_Bot
         [Alias("user", "whois")]
         public async Task UserInfo([Summary("The (optional) user to get info for")] IUser user = null)
         {
-            var userInfo = user ?? Context.Client.CurrentUser;
-            await ReplyAsync($"{userInfo.Username}#{userInfo.Discriminator}");
+            if (user == null)
+            {
+                await ReplyAsync("You missed one argument");
+            }
+            else
+            {
+                await ReplyAsync($"{user.Username}#{user.Discriminator}");
+            }
+            
+            
         }
 
 
