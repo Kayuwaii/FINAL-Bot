@@ -1,17 +1,23 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Final_Bot;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+
 
 public class Bot
 {
     private CommandService commands;
     private DiscordSocketClient client;
     private DependencyMap map;
+
+    private List<string> q1 = new List<string>();
+    private List<string> q2 = new List<string>();
 
     public async Task Start()
     {
@@ -37,11 +43,25 @@ public class Bot
 
         await InstallCommands();
 
+        addQuestions();
+
         // Hook into the MessageReceived event on DiscordSocketClient
         client.MessageReceived += async (message) =>
         {
-        };
+            if (message.Content.isInList(q1))
+            {
+                await message.Channel.SendMessageAsync("It's a fictitious buisness, it's a project from 3 Monlau students.");
+            }
+            else if (message.Content.isInList(q2))
+            {
+                await message.Channel.SendMessageAsync("You are in the Munngames FAQ discord chat. Feel free to ask whatever you" +
+                    " want, and if I don't know the answer to your question, probably someone here will.");
+            }
+            else
+            {
 
+            }
+        };
         // Configure the client to use a Bot token, and use our token
         await client.LoginAsync(TokenType.Bot, token);
         // Connect the client to Discord's gateway
@@ -93,5 +113,26 @@ public class Bot
         }
     }
 
+    private void addQuestions()
+    {
+        #region Question 1: What is munngames?
+        q1.Add("what is munngames?");
+        q1.Add("what's munngames?");
+        q1.Add("whats munngames?");
+        q1.Add("what is mungames?");
+        q1.Add("what's mungames?");
+        q1.Add("whats mungames?");
+        #endregion
+        #region Question 2: What's this? (The Chat)
+        q2.Add("what's this?");
+        q2.Add("what's dis?");
+        q2.Add("where am i?");
+        q2.Add("what is this?");
+        q2.Add("what is this?");
+        q2.Add("da fuq is dis?");
+        q2.Add("what the fuck is this?");
+        #endregion
+
+    }
 
 }
