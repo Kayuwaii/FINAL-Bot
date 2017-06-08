@@ -14,7 +14,7 @@ public class Bot
 {
     private CommandService commands;
     private DiscordSocketClient client;
-    private DependencyMap map;
+    private IDependencyMap map;
 
     private List<string> q1 = new List<string>();
     private List<string> q2 = new List<string>();
@@ -39,7 +39,7 @@ public class Bot
         // Place the token of your bot account here
         string token = "MjU0NjQyNDI5Nzk2Mjg2NDc0.C4T9KA.Vr4vDBKSmHtPLBdbslZfV5yOWYA";
 
-        map = new DependencyMap();
+        map = new IDependencyMap();
 
         await InstallCommands();
 
