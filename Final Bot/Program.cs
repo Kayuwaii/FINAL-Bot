@@ -1,12 +1,13 @@
-﻿namespace Final_Bot
+﻿using Discord;
+using Discord.WebSocket;
+using System;
+using System.Threading.Tasks;
+
+namespace MyBot
 {
-    class Program
+    public class Program
     {
-        // Convert our sync-main to an async main method
-        static void Main(string[] args) => new Bot().Start().GetAwaiter().GetResult();
-
-
+        public static void Main(string[] args)
+            => new Bot().MainAsync().GetAwaiter().GetResult();
     }
-
-    
 }
