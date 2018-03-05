@@ -37,10 +37,10 @@ namespace Final_Bot
                     await delete(message);
                     break;
                 case "!addpic":
-                    addpic(message, args);
+                    await Task.Run(() => addpic(message, args));
                     break;
                 case "!addgif":
-                    addgif(message, args);
+                    await Task.Run(() => addgif(message, args));
                     break;
             }
         }
@@ -76,9 +76,27 @@ namespace Final_Bot
         private static async Task pic(SocketMessage msg, string file = null)
         {
             if (file == null) await msg.Channel.SendMessageAsync("Wich File?");
+            else if (file == "list")
+            {
+                await (await msg.Author.GetOrCreateDMChannelAsync()).SendMessageAsync("Lista de Imagenes:");
+                using (StreamReader sr = new StreamReader(".\\resources\\images.xml", true))
+                {
+                    XmlDocument xmlDoc1 = new XmlDocument();
+                    xmlDoc1.Load(sr);
+                    XmlNodeList itemNodes = xmlDoc1.GetElementsByTagName("img");
+                    if (itemNodes.Count > 0)
+                    {
+                        String all = "";
+                        foreach (XmlElement node in itemNodes)
+                        {
+                            all += ("\n " + node.Attributes["name"].Value.ToString());
+                        }
+                        await (await msg.Author.GetOrCreateDMChannelAsync()).SendMessageAsync(all);
+                    }
+                }
+            }
             else
             {
-                delComm(msg);
                 string fpath = GetFile(file, "img");
                 using (var client = new System.Net.WebClient())
                 {
@@ -88,6 +106,7 @@ namespace Final_Bot
                 await msg.Channel.SendFileAsync(".\\" + file + ".jpeg");
                 File.Delete(".\\" + file + ".jpeg");
             }
+            delComm(msg);
         }
 
         private static async Task gif(SocketMessage msg, string file = null)
@@ -95,14 +114,23 @@ namespace Final_Bot
             if (file == null) await msg.Channel.SendMessageAsync("Wich File?");
             else
             {
-                string fpath = GetFile(file, "gif");
-                using (var client = new System.Net.WebClient())
+                try
                 {
-                    client.DownloadFile(fpath, file + ".gif");
+                    string fpath = GetFile(file, "gif");
+                    using (var client = new System.Net.WebClient())
+                    {
+                        client.DownloadFile(fpath, file + ".gif");
+                    }
                 }
+                catch (Exception ex)
+                {
 
-                await msg.Channel.SendFileAsync(".\\" + file + ".gif");
-                File.Delete(".\\" + file + ".gif");
+                }
+                finally
+                {
+                    await msg.Channel.SendFileAsync(".\\" + file + ".gif");
+                    File.Delete(".\\" + file + ".gif");
+                }
             }
             delComm(msg);
         }
