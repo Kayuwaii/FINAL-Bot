@@ -71,12 +71,17 @@ namespace Final_Bot
         private static async Task help(SocketMessage msg)
         {
             delComm(msg);
-            await (await msg.Author.GetOrCreateDMChannelAsync()).SendMessageAsync("Comandos: !help, !pic, !gif, !delete, !addpic, !addgif." +
-                "\n\n     !pic *nombre*  (muestra la foto especificada, puedes ver una lista de fotos con !pic list)" +
-                "\n\n     !gif *nombre*  (muestra el gif especificado, puedes ver una lista de gifs con !gif list)" +
-                "\n\n     !delete  (borra los ultimos 100 mensajes, solo podrás usarlo si eres admin)" +
-                "\n\n     !addpic *nombre* *enlaceDeLaFoto*  (añade la imagen desde el enlace a la lista de imagenes disponibles, una vez hecho puedes usar !pic *nombre* con el nombre que hayas especificado para mostrar la foto)" +
-                "\n\n     !addgif *nombre* *enlaceDelGIF*  (añade el GIF desde el enlace a la lista de GIFs disponibles, una vez hecho puedes usar !gif *nombre* con el nombre que hayas especificado para mostrar el GIF)");
+            await (await msg.Author.GetOrCreateDMChannelAsync()).SendMessageAsync("```ASCIIDOC" +
+                "\n\n           [AYUDA]" +
+                "\n\n  =======================================" +
+                "\n\n   Comandos :: !help, !pic, !gif, !delete, !addpic, !addgif." +
+                "\n\n   !pic *nombre* :: (muestra la foto especificada, puedes ver una lista de fotos con !pic list)" +
+                "\n\n   !gif *nombre* :: (muestra el gif especificado, puedes ver una lista de gifs con !gif list)" +
+                "\n\n   !delete       :: (borra los ultimos 100 mensajes, solo podrás usarlo si eres admin)" +
+                "\n\n   !addpic *nombre* *enlaceDeLaFoto*     :: (añade la imagen desde el enlace a la lista de imagenes disponibles, una vez hecho puedes usar !pic *nombre* con el nombre que hayas especificado para mostrar la foto)" +
+                "\n\n   !addgif *nombre* *enlaceDelGIF*       :: (añade el GIF desde el enlace a la lista de GIFs disponibles, una vez hecho puedes usar !gif *nombre* con el nombre que hayas especificado para mostrar el GIF)" +
+                "\n\n   ```"
+                );
         }
 
         private static async Task pic(SocketMessage msg, string file = null)
